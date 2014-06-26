@@ -1,5 +1,3 @@
-import WindsockApi from '~/scripts/api';
-
 // FIXME: This is a hack to ensure the windsock-data definition is
 // executed before the windsock-widget one. Otherwise, data bindings
 // don't work properly. Very ugly to do this both in the HTML and JS
@@ -12,12 +10,7 @@ Polymer('windsock-admin-add', {
   },
 
   addNotice: function() {
-    // FIXME: share? or use windsock-data? don't recreate every time
-    var api = new WindsockApi(this.src);
-    api.addNotice(this.form.text, this.form.type, this.form.author).then((newRecord) => {
-      this.resetForm();
-      this.fire('notice-added', newRecord);
-    });
+    this.fire('add-notice', this.form);
     return false; // cancel event
   },
 
@@ -26,38 +19,36 @@ Polymer('windsock-admin-add', {
   }
 });
 
-Polymer('windsock-admin-edit', {
-  ready: function() {
-    // FIXME: share? don't recreate every time
-    this.api = new WindsockApi(this.src);
-  },
 
+Polymer('windsock-admin-edit', {
   updateNotice: function() {
-    this.api.updateNotice(this.notice).then(() => {
-      this.fire('notice-updated', this.notice);
-    });
+    this.fire('update-notice', this.notice);
   },
 
   deleteNotice: function() {
-    this.api.deleteNotice(this.notice).then(() => {
-      this.fire('notice-deleted', this.notice);
-    });
+    this.fire('delete-notice', this.notice);
   }
 });
 
 
 Polymer('windsock-admin', {
   ready: function() {
-    this.addEventListener('notice-added', (event) => {
-      var addedNotice = event.detail;
-      this.notices.unshift(addedNotice);
+    var data = this.$.data;
+    var add = this.$.add;
+
+    this.addEventListener('add-notice', (event) => {
+      var properties = event.detail;
+      data.addNotice(properties).then(add.resetForm.bind(add));
     });
 
-    this.addEventListener('notice-deleted', (event) => {
-      var deletedNotice = event.detail;
-      this.notices = this.notices.filter((n) => n !== deletedNotice);
+    this.addEventListener('update-notice', (event) => {
+      var noticeToUpdate = event.detail;
+      data.updateNotice(noticeToUpdate);
     });
 
-    // Don't need to catch notice-updated since it's already updated in place
+    this.addEventListener('delete-notice', (event) => {
+      var noticeToDelete = event.detail;
+      data.deleteNotice(noticeToDelete);
+    });
   }
 });

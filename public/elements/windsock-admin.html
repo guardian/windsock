@@ -41,9 +41,9 @@
 
 <polymer-element name="windsock-admin" attributes="src">
   <template>
-    <windsock-data src="{{src}}" sink-notices="{{notices}}"></windsock-data>
+    <windsock-data id="data" src="{{src}}" sink-notices="{{notices}}"></windsock-data>
 
-    <windsock-admin-add src="{{src}}" notices="{{notices}}"></windsock-admin-add>
+    <windsock-admin-add id="add" src="{{src}}" notices="{{notices}}"></windsock-admin-add>
 
     <ul>
       <template repeat="{{notice in notices}}">

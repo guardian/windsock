@@ -11,3 +11,4 @@ test-output/
 .ensime_lucene
 bower_components
 jspm_packages
+.tern-port
