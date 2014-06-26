@@ -1,0 +1,21 @@
+{
+  "name": "windsock",
+  "version": "0.0.0",
+  "homepage": "-",
+  "authors": [
+    "Sébastien Cevey <seb.cevey@guardian.co.uk>"
+  ],
+  "license": "Apache-2",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "platform": "Polymer/platform#~0.3.2",
+    "polymer": "Polymer/polymer#~0.3.2"
+  }
+}

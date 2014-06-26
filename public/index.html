@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Windsock</title>
+  <script src="bower_components/platform/platform.js"></script>
+  <!-- Use the CDN version by uncommenting the next line -->
+  <!-- <script src="https://jspm.io/system@0.6.js"></script> -->
+  <script src="jspm_packages/system@0.6.js"></script>
+  <link rel="import" href="elements/windsock-status.html">
+  <link rel="import" href="elements/windsock-notices.html">
+  <link rel="import" href="elements/windsock-widget.html">
+  <link rel="import" href="elements/windsock-admin.html">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+<body>
+  <h1>Windsock</h1>
+
+  <h2>Widget</h2>
+  <windsock-widget src="/api" refresh="5000"></windsock-widget>
+
+  <h2>Status</h2>
+  <windsock-status src="/api" refresh="5000"></windsock-status>
+
+  <h2>Notices</h2>
+  <windsock-notices src="/api" refresh="5000"></windsock-notices>
+
+  <h2>Admin</h2>
+  <windsock-admin src="/api"></windsock-admin>
+</body>
+</html>

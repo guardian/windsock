@@ -1,0 +1,6 @@
+{
+  "registry": "jspm",
+  "dependencies": {
+    "github:ded/reqwest": "^1.1.1"
+  }
+}

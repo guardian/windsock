@@ -1,0 +1,56 @@
+* /deep/ windsock-widget::shadow button {
+  border: 0;
+  background: 0;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+* /deep/ windsock-widget::shadow button::before {
+  content: "›";
+  display: inline-block;
+  transform: rotate(270deg);
+  font-size: 120%;
+}
+
+* /deep/ windsock-widget.collapsed::shadow button::before {
+  transform: rotate(90deg);
+}
+
+
+* /deep/ windsock-notices-view::shadow ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+* /deep/ windsock-notices-view::shadow .notice {
+  margin-bottom: 0.5em;
+}
+
+* /deep/ windsock-notices-view::shadow .notice__type {
+  font-variant: small-caps;
+  border-radius: 5px;
+  padding: 0 4px;
+  margin-right: 1em;
+}
+
+* /deep/ windsock-notices-view::shadow .notice__type--critical {
+  background-color: #ff6666;
+}
+* /deep/ windsock-notices-view::shadow .notice__type--minor {
+  background-color: #ffff66;
+}
+* /deep/ windsock-notices-view::shadow .notice__type--announcement {
+  background-color: #6699ff;
+}
+
+* /deep/ windsock-notices-view::shadow .notice__created {
+  color: #666;
+  margin-left: 1em;
+}
+
+* /deep/ windsock-notices-view::shadow .notice__updated {
+  display: none;
+}

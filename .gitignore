@@ -9,3 +9,5 @@ test-output/
 .classpath_nb
 .ensime
 .ensime_lucene
+bower_components
+jspm_packages

@@ -1,0 +1,25 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="windsock-data.html">
+
+<script>
+  System.import('~/elements/windsock-status');
+</script>
+
+<polymer-element name="windsock-status-view" attributes="notices">
+  <template>
+    <template if="{{notices.length == 0}}">
+      Service status &ndash; No issues
+    </template>
+    <template if="{{notices.length != 0}}">
+      Service status &ndash; {{notices.length}} {{"notice" | pluralize(notices.length)}}
+    </template>
+  </template>
+</polymer-element>
+
+
+<polymer-element name="windsock-status" attributes="src refresh">
+  <template>
+    <windsock-data src="{{src}}" refresh="{{refresh}}" sink-notices="{{notices}}"></windsock-data>
+    <windsock-status-view notices="{{notices}}"></windsock-status-view>
+  </template>
+</polymer-element>

@@ -1,0 +1,59 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="windsock-data.html">
+
+<script>
+  System.import('~/elements/windsock-admin');
+</script>
+
+
+<template id="noticeForm">
+  <input type="text" value="{{form.text}}" required />
+  <select value="{{form.type}}" required>
+    <option value="minor">Minor</option>
+    <option value="critical">Critical</option>
+    <option value="announcement">Announcement</option>
+  </select>
+  <input type="author" value="{{form.author}}" required />
+</template>
+
+
+<polymer-element name="windsock-admin-add" attributes="src notices">
+  <template>
+    <!-- FIXME: form needed for required, but then submittion not cancelled? on-submit not working? -->
+    <!-- <form> -->
+      <template bind ref="noticeForm"></template>
+      <input type="submit" value="Add notice" on-click="{{addNotice}}" />
+    <!-- </form> -->
+  </template>
+</polymer-element>
+
+
+<!-- FIXME: don't take in src argument, should not be necessary -->
+<polymer-element name="windsock-admin-edit" attributes="src notice">
+  <template>
+    <template bind="{{notice.data.notice as form}}" ref="noticeForm"></template>
+
+    <input type="submit" value="Update" on-click="{{updateNotice}}" />
+    <button on-click="{{deleteNotice}}">Delete</button>
+  </template>
+</polymer-element>
+
+
+<polymer-element name="windsock-admin" attributes="src">
+  <template>
+    <windsock-data src="{{src}}" sink-notices="{{notices}}"></windsock-data>
+
+    <windsock-admin-add src="{{src}}" notices="{{notices}}"></windsock-admin-add>
+
+    <ul>
+      <template repeat="{{notice in notices}}">
+        <li>
+          <!-- FIXME: refs don't work inside this template-repeat? -->
+          <!-- <template bind ref="noticeForm"></template> -->
+
+          <windsock-admin-edit src="{{src}}" notice="{{notice}}"></windsock-admin-edit>
+        </li>
+      </template>
+    </ul>
+  </template>
+</polymer-element>
