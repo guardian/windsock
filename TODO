@@ -1,0 +1,24 @@
+* Notice list vs status toggle
+  - Sample styling
+* Admin UI for REST API
+  - Simple styling (GSS? Bootstrap?)
+* List ordered by lastModified
+* Auth for admin UI? (can be Basic Auth initially)
+* Configurable table name, baseUrl and other properties
+* CloudFormation script to create stack, DB, rights, etc
+* Proper README
+* HTTPS domain
+
+* CloudWatch metrics on Radiator
+* Add CloudWatch metrics
+* Tests
+  - REST server
+  - Web Components
+* Bundle:
+  - Traceur-compile ES6
+  - Vulcanize web components
+* Proper AWS async API
+* Can't import polymer in element scripts as it's an HTML import?
+  e.g. import {Polymer} from 'github:Polymer/polymer';
+
+* Use argo library
