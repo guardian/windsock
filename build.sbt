@@ -10,10 +10,9 @@ libraryDependencies ++= {
   val akkaV = "2.2.4"
   val sprayV = "1.2.1"
   Seq(
-    // "com.github.seratch"  %%  "awscala"          % "0.2.+",
     "com.amazonaws"       %   "aws-java-sdk"     % "1.7.13",
     "org.json4s"          %%  "json4s-jackson"   % "3.2.6",
-//    "com.github.nscala-time" %% "nscala-time"    % "1.2.0",
+    "com.github.nscala-time" %% "nscala-time"    % "1.2.0",
     "io.spray"            %   "spray-can"        % sprayV,
     "io.spray"            %%  "spray-json"       % "1.2.6",
     "io.spray"            %   "spray-routing"    % sprayV,
