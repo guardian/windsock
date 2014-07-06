@@ -51,8 +51,8 @@ class DynamoDBPersistence(noticeTableName: String)
 
   private def byId(id: String) = Map("Id" -> S(id))
 
-
-  def list: Seq[NoticeRecord] = dynamodb.scan map (itemToNoticeRecord)
+  // Order by lastModified, most recent first
+  def list: Seq[NoticeRecord] = dynamodb.scan map (itemToNoticeRecord) sortWith (_.lastModified isAfter _.lastModified)
 
   def get(id: String): Option[NoticeRecord] =
     dynamodb.get(byId(id)) map (itemToNoticeRecord)

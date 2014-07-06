@@ -2,12 +2,11 @@
   - Sample styling
 * Admin UI for REST API
   - Simple styling (GSS? Bootstrap?)
-* List ordered by lastModified
-* Auth for admin UI? (can be Basic Auth initially)
-* Configurable table name, baseUrl and other properties
+* Load Auth config for admin UI
 * CloudFormation script to create stack, DB, rights, etc
 * Proper README
 * HTTPS domain
+* Configurable table name, baseUrl and other properties
 
 * CloudWatch metrics on Radiator
 * Add CloudWatch metrics
