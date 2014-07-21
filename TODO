@@ -1,12 +1,10 @@
-* Notice list vs status toggle
-  - Sample styling
-* Admin UI for REST API
-  - Simple styling (GSS? Bootstrap?)
-* Load Auth config for admin UI
 * CloudFormation script to create stack, DB, rights, etc
-* Proper README
 * HTTPS domain
 * Configurable table name, baseUrl and other properties
++ Proper README
++ Load Auth config for admin UI from DynamoDB/S3?
++ Record author from auth?
++ Different styling based on type of notices
 
 * CloudWatch metrics on Radiator
 * Add CloudWatch metrics
@@ -19,5 +17,12 @@
 * Proper AWS async API
 * Can't import polymer in element scripts as it's an HTML import?
   e.g. import {Polymer} from 'github:Polymer/polymer';
+* Record link?
+* Record state of seen vs unseen notices in browser
++ Notice list vs status toggle
+  - Sample styling
++ Admin UI for REST API
+  - Simple styling (GSS? Bootstrap?)
+
 
 * Use argo library
