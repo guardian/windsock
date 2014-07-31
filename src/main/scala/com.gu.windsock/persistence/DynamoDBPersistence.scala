@@ -29,7 +29,7 @@ class DynamoDBPersistence(noticeTableName: String)
     NoticeRecord(
       item("Id").getS,
       dateFormat.parseDateTime(item("DateCreated").getS),
-      dateFormat.parseDateTime(item("DateCreated").getS),
+      dateFormat.parseDateTime(item("LastModified").getS),
       Notice(
         item("Notice.Text").getS,
         item("Notice.Type").getS,
