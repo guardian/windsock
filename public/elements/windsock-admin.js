@@ -2,7 +2,7 @@
 // executed before the windsock-widget one. Otherwise, data bindings
 // don't work properly. Very ugly to do this both in the HTML and JS
 // files...
-import WindsockData from './windsock-data';
+import './windsock-data';
 
 Polymer('windsock-admin-add', {
   ready: function() {
