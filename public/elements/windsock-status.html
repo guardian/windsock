@@ -7,12 +7,8 @@
 
 <polymer-element name="windsock-status-view" attributes="notices">
   <template>
-    <template if="{{notices.length == 0}}">
-      Service status &ndash; No issues
-    </template>
-    <template if="{{notices.length != 0}}">
-      Service status &ndash; {{notices.length}} {{"notice" | pluralize(notices.length)}}
-    </template>
+    <span class="count">{{notices.length}}</span>
+    <span class="label">{{"notice" | pluralize(notices.length)}}</span>
   </template>
 </polymer-element>
 
