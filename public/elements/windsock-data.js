@@ -2,13 +2,21 @@ import WindsockApi from '~/scripts/api';
 
 Polymer('windsock-data', {
   ready: function() {
-    this.api = new WindsockApi(this.src);
+    if (this.src) {
+      this.api = new WindsockApi(this.src);
+      this.loadNotices();
+    }
+  },
 
-    this.loadNotices();
+  srcChanged: function() {
+    if (this.src) {
+      this.api = new WindsockApi(this.src);
+      this.loadNotices();
+    }
   },
 
   attachedCallback: function() {
-    if (this.refresh) {
+    if (this.src && this.refresh) {
       var reload = this.loadNotices.bind(this);
       this.refreshInterval = setInterval(reload, this.refresh);
     }
