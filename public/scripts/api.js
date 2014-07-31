@@ -1,4 +1,4 @@
-import reqwest from 'github:ded/reqwest';
+import reqwest from 'reqwest';
 
 // Wrap in native Promise, since the reqwest promises don't flatMap
 // correctly.

@@ -8,7 +8,7 @@ System.config({
 
 System.config({
   "map": {
-    "github:ded/reqwest": "github:ded/reqwest@^1.1.1"
+    "reqwest": "github:ded/reqwest@^1.1.1"
   }
 });
 
