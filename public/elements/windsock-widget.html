@@ -16,7 +16,7 @@
 
     <windsock-data src="{{src}}" refresh="{{refresh}}" sink-notices="{{notices}}"></windsock-data>
 
-    <button on-click="{{toggle}}">
+    <button on-click="{{toggle}}" disabled?="{{notices.length === 0}}">
       <windsock-status-view notices="{{notices}}"></windsock-status-view>
     </button>
     <windsock-notices-view notices="{{notices}}"
