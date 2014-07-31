@@ -7,13 +7,20 @@
 
 
 <template id="noticeForm">
-  <input type="text" value="{{form.text}}" required />
+  <style>
+    textarea {
+      width: 100%;
+      height: 3em;
+    }
+  </style>
+
+  <textarea placeholder="Enter description..." value="{{form.text}}" required></textarea>
   <select value="{{form.type}}" required>
     <option value="minor">Minor</option>
     <option value="critical">Critical</option>
     <option value="announcement">Announcement</option>
   </select>
-  <input type="author" value="{{form.author}}" required />
+  <input type="author" placeholder="Enter author..." value="{{form.author}}" required />
 </template>
 
 
@@ -41,19 +48,38 @@
 
 <polymer-element name="windsock-admin" attributes="src">
   <template>
+    <style>
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      fieldset,
+      li {
+        margin-bottom: 1em;
+      }
+    </style>
+
     <windsock-data id="data" src="{{src}}" sink-notices="{{notices}}"></windsock-data>
 
-    <windsock-admin-add id="add" src="{{src}}" notices="{{notices}}"></windsock-admin-add>
+    <fieldset>
+      <legend>Add new</legend>
+      <windsock-admin-add id="add" src="{{src}}" notices="{{notices}}"></windsock-admin-add>
+    </fieldset>
 
-    <ul>
-      <template repeat="{{notice in notices}}">
-        <li>
-          <!-- FIXME: refs don't work inside this template-repeat? -->
-          <!-- <template bind ref="noticeForm"></template> -->
+    <fieldset>
+      <legend>Update existing</legend>
+      <ul>
+        <template repeat="{{notice in notices}}">
+          <li>
+            <!-- FIXME: refs don't work inside this template-repeat? -->
+            <!-- <template bind ref="noticeForm"></template> -->
 
-          <windsock-admin-edit src="{{src}}" notice="{{notice}}"></windsock-admin-edit>
-        </li>
-      </template>
-    </ul>
+            <windsock-admin-edit src="{{src}}" notice="{{notice}}"></windsock-admin-edit>
+          </li>
+        </template>
+      </ul>
+    </fieldset>
   </template>
 </polymer-element>
