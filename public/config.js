@@ -1,6 +1,6 @@
 System.config({
   "paths": {
-    "*": "*.js",
+    "windsock:*": "*.js",
     "npm:*": "jspm_packages/npm/*.js",
     "github:*": "jspm_packages/github/*.js"
   }

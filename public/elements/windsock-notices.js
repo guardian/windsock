@@ -1,3 +1,4 @@
+// FIXME: can't use ../ possibly due to a SystemJS bug?
 import timeSince from 'windsock:scripts/time-since';
 
 // FIXME: This is a hack to ensure the windsock-data definition is
