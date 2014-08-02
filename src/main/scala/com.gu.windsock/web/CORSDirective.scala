@@ -17,10 +17,9 @@ trait CORSDirective { this: HttpService =>
   private def respondWithAccessControlAllowMethodsAndHeaders(route: Route): Route = {
     headerValueByName("Access-Control-Request-Headers") { headers =>
       respondWithHeaders(
-        `Access-Control-Allow-Methods`(GET, OPTIONS),
+        `Access-Control-Allow-Methods`(GET, POST, PUT, DELETE, OPTIONS),
         `Access-Control-Allow-Headers`(headers)
-      )
-      route
+      ) { route }
     }
   }
 

@@ -53,6 +53,11 @@ trait WindsockRouter
     EmbeddedEntity(absUrl(s"/api/notices/${notice.id}"), Some(notice))
 
   val root = withAllowOriginHeader {
+    withAllowMethodsHeader {
+      options {
+        complete(StatusCodes.OK)
+      }
+    } ~
     path("") {
       get {
         getFromFile("public/index.html")
