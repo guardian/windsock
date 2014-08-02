@@ -72,7 +72,6 @@ trait WindsockRouter
       respondWithMediaType(`application/json`) {
         pathEnd {
           get {
-            // TODO: absolute URLs
             val links = List(Link("notices", absUrl("/api/notices")))
             complete {
               val notices = store.list.map(recordToEntity).toList
@@ -81,9 +80,7 @@ trait WindsockRouter
               EntityResponse(data = Some(data), links = Some(links))
             }
           }
-//    }
         } ~
-        // TODO: auth on mutable APIs
         pathPrefix("notices") {
           pathEnd {
             get {
@@ -135,4 +132,6 @@ trait WindsockRouter
         }
       }
     }
+  }
+
 }
