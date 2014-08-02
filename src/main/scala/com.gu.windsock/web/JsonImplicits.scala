@@ -33,9 +33,8 @@ object JsonImplicits extends DefaultJsonProtocol {
   implicit val impEmbeddedNoticeRecord = jsonFormat3(EmbeddedEntity[NoticeRecord])
   implicit val impEntityResponseListNotice = jsonFormat3(EntityResponse[List[EmbeddedEntity[NoticeRecord]]])
   implicit val impEntityResponseString = jsonFormat3(EntityResponse[String])
-  implicit val impEntityResponseInt = jsonFormat3(EntityResponse[Int])
   implicit val impEmbeddedEntityString = jsonFormat3(EmbeddedEntity[String])
-  implicit val impEmbeddedEntityInt = jsonFormat3(EmbeddedEntity[Int])
+  implicit val impEmbeddedEntityListNotices = jsonFormat3(EmbeddedEntity[List[EmbeddedEntity[NoticeRecord]]])
   implicit val impIndex = jsonFormat2(Index)
   implicit val impEntityResponseIndex = jsonFormat3(EntityResponse[Index])
 }

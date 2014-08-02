@@ -34,7 +34,7 @@ class WindsockActor extends Actor with WindsockRouter {
 }
 
 
-case class Index(title: String, status: EmbeddedEntity[Int])
+case class Index(title: String, notices: EmbeddedEntity[List[EmbeddedEntity[NoticeRecord]]])
 
 trait WindsockRouter
     extends HttpService
@@ -46,7 +46,13 @@ trait WindsockRouter
 
   val store: Persistence
 
-  val root =
+  val baseUri = "http://localhost:8080"
+  def absUrl(path: String) = s"$baseUri$path"
+
+  def recordToEntity(notice: NoticeRecord) =
+    EmbeddedEntity(absUrl(s"/api/notices/${notice.id}"), Some(notice))
+
+  val root = withAllowOriginHeader {
     path("") {
       get {
         getFromFile("public/index.html")
@@ -62,32 +68,24 @@ trait WindsockRouter
         pathEnd {
           get {
             // TODO: absolute URLs
-            val links = List(Link("notices", "/api/notices"))
+            val links = List(Link("notices", absUrl("/api/notices")))
             complete {
-              val notices = store.list
-              val data = Index("Windsock API", EmbeddedEntity("/api/status", Some(notices.size)))
+              val notices = store.list.map(recordToEntity).toList
+              // TODO: return collection response with total etc
+              val data = Index("Windsock API", EmbeddedEntity(absUrl("/api/notices"), Some(notices)))
               EntityResponse(data = Some(data), links = Some(links))
             }
           }
-        } ~
-        path("status") {
-          get {
-            complete {
-              val notices = store.list
-              EntityResponse(data = Some(notices.size))
-            }
-          }
+//    }
         } ~
         // TODO: auth on mutable APIs
         pathPrefix("notices") {
           pathEnd {
             get {
               complete {
-                val entities = store.list.map { notice =>
-                  EmbeddedEntity(s"/api/notices/${notice.id}", Some(notice))
-                }
+                val entities = store.list.map(recordToEntity).toList
                 // TODO: return collection response with total etc
-                EntityResponse(data = Some(entities.toList))
+                EntityResponse(data = Some(entities))
               }
             } ~
             post {
