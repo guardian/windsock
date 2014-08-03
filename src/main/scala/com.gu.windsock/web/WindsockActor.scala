@@ -2,6 +2,7 @@ package com.gu.windsock.web
 
 import akka.actor.Actor
 import spray.routing._
+import spray.routing.authentication.{BasicAuth, UserPass}
 import spray.http._
 import MediaTypes._
 import StatusCodes._
@@ -13,6 +14,9 @@ import com.gu.windsock.model._
 import com.gu.windsock.persistence.{Persistence, DynamoDBPersistence}
 
 import com.gu.argo._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+
 
 
 // we don't implement our route structure directly in the service actor because
@@ -46,6 +50,14 @@ trait WindsockRouter
 
   val store: Persistence
 
+  // TODO: extract auth-related stuff, read from updateable file
+  def extractUser(userPass: UserPass): String = userPass.user
+
+  def requireAuth =
+    authenticate(BasicAuth(realm = "Admin credentials", createUser = extractUser _))
+
+
+  // TODO: configurable
   val baseUri = "http://localhost:8080"
   def absUrl(path: String) = s"$baseUri$path"
 
@@ -61,6 +73,13 @@ trait WindsockRouter
     path("") {
       get {
         getFromFile("public/index.html")
+      }
+    } ~
+    path("admin") {
+      get {
+        requireAuth { username =>
+          getFromFile("public/admin.html")
+        }
       }
     } ~
     pathPrefix("") {
@@ -91,10 +110,12 @@ trait WindsockRouter
               }
             } ~
             post {
-              entity(as[Notice]) { notice =>
-                complete {
-                  val newRecord = store.add(notice)
-                  EmbeddedEntity(s"/api/notices/${newRecord.id}", Some(newRecord))
+              requireAuth { username =>
+                entity(as[Notice]) { notice =>
+                  complete {
+                    val newRecord = store.add(notice)
+                    recordToEntity(newRecord)
+                  }
                 }
               }
             }
@@ -111,21 +132,25 @@ trait WindsockRouter
               }
             } ~
             put {
-              entity(as[Notice]) { notice =>
-                complete {
-                  store.update(noticeId, notice) match {
-                    case Some(updatedRecord) => {
-                      EntityResponse(data = Some(updatedRecord))
+              requireAuth { username =>
+                entity(as[Notice]) { notice =>
+                  complete {
+                    store.update(noticeId, notice) match {
+                      case Some(updatedRecord) => {
+                        EntityResponse(data = Some(updatedRecord))
+                      }
+                      case None => NotFound
                     }
-                    case None => NotFound
                   }
                 }
               }
             } ~
             delete {
-              complete {
-                store.delete(noticeId)
-                NoContent
+              requireAuth { username =>
+                complete {
+                  store.delete(noticeId)
+                  NoContent
+                }
               }
             }
           }
