@@ -12,3 +12,5 @@ test-output/
 bower_components
 jspm_packages
 .tern-port
+node_modules
+.ensime_cache
