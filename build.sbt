@@ -1,3 +1,5 @@
+import AssemblyKeys._
+
 organization  := "com.gu.windsock"
 
 version       := "0.1"
@@ -24,3 +26,9 @@ libraryDependencies ++= {
 }
 
 Revolver.settings
+
+assemblySettings
+
+jarName in assembly := "windsock.jar"
+
+test in assembly := {}
