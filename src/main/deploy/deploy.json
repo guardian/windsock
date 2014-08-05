@@ -1,0 +1,22 @@
+{
+    "packages": {
+        "windsock": {
+            "type": "autoscaling",
+            "data": {
+                "port": "8080",
+                "bucket": "composer-dist"
+            }
+        }
+    },
+    "recipes": {
+        "default": {
+            "depends": ["artifactUploadOnly", "deployOnly"]
+        },
+        "deployOnly": {
+            "actionsPerHost": ["windsock.deploy"]
+        },
+        "artifactUploadOnly": {
+            "actionsBeforeApp": ["windsock.uploadArtifacts"]
+        }
+    }
+}
