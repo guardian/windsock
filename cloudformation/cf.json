@@ -1,0 +1,217 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Windsock",
+    "Parameters": {
+        "KeyName": {
+            "Description": "The EC2 Key Pair to allow SSH access to the instance",
+            "Type": "String"
+        },
+        "DeployBucket": {
+            "Description": "The name of the S3 bucket that stores the artifact as part of deployment",
+            "Type": "String"
+        },
+        "NoticeTableName": {
+            "Description": "Name of the DynamoDB table to store notices",
+            "Type": "String",
+            "Default": "Notices"
+        },
+        "Stage": {
+            "Description": "Environment name",
+            "Type": "String",
+            "AllowedValues": ["TEST", "PROD"],
+            "Default": "PROD"
+        },
+        "Stack": {
+            "Description": "Stack name",
+            "Type": "String"
+        },
+        "App": {
+            "Description": "App name",
+            "Type": "String",
+            "Default": "windsock"
+        },
+        "ImageIdInstanceStorage": {
+            "Description": "AMI id for instances with instance storage.",
+            "Type": "String",
+            "Default": "ami-f96cbd8e"
+        },
+        "InstanceType": {
+            "Description": "WebServer EC2 instance type",
+            "Type": "String",
+            "Default": "t2.micro",
+            "ConstraintDescription": "must be a valid EC2 instance type."
+        }
+    },
+
+    "Resources": {
+        "NoticesDynamoTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "Id",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "Id",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits" : "10",
+                    "WriteCapacityUnits" : "5"
+                },
+                "TableName": { "Ref": "NoticeTableName" }
+            }
+        },
+
+        "SSHSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Allow SSH access",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "77.91.248.0/21"
+                    }
+                ]
+            }
+        },
+
+        "LoadBalancerSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "HTTP/S access to load balancers",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "443",
+                        "ToPort": "443",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+        },
+
+        "AppServerSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "HTTP access to app servers",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "8080",
+                        "ToPort": "8080",
+                        "SourceSecurityGroupName": {
+                            "Fn::GetAtt": ["LoadBalancer", "SourceSecurityGroup.GroupName"]
+                        }
+                    }
+                ]
+            }
+        },
+
+        "LoadBalancer": {
+            "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+            "Properties": {
+                "AvailabilityZones": { "Fn::GetAZs" : "" },
+                "SecurityGroups": [{ "Fn::GetAtt": ["LoadBalancerSecurityGroup", "GroupId"] }],
+                "Listeners": [
+                    {
+                        "LoadBalancerPort": "80",
+                        "InstancePort": "8080",
+                        "Protocol": "HTTP"
+                    }
+                ],
+
+                "HealthCheck": {
+                    "Target": "HTTP:8080/api",
+                    "HealthyThreshold": "2",
+                    "UnhealthyThreshold": "2",
+                    "Interval": "10",
+                    "Timeout": "5"
+                }
+            }
+        },
+
+        "LaunchConfig": {
+            "Type": "AWS::AutoScaling::LaunchConfiguration",
+            "Properties": {
+                "KeyName": { "Ref": "KeyName" },
+                "ImageId": { "Ref": "ImageIdInstanceStorage" },
+                "SecurityGroups": [
+                    { "Ref": "SSHSecurityGroup" },
+                    { "Ref": "AppServerSecurityGroup" }
+                ],
+                "InstanceType": { "Ref": "InstanceType" },
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": ["", [
+                            "#!/bin/bash -ev\n",
+                            "apt-get -y update\n",
+                            "apt-get -y install language-pack-en openjdk-7-jre-headless\n",
+
+                            "cd /home/ubuntu\n",
+
+                            "wget https://s3-eu-west-1.amazonaws.com/",
+                            { "Ref" : "DeployBucket" },
+                            "/",
+                            { "Ref" : "Stage" },
+                            "/windsock/windsock.jar\n",
+
+                            "java -Xmx512m -jar windsock.jar &\n"
+                        ]]
+                    }
+                }
+            }
+        },
+
+        "AutoscalingGroup": {
+            "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "Properties": {
+                "AvailabilityZones": { "Fn::GetAZs" : "" },
+                "LaunchConfigurationName": { "Ref": "LaunchConfig" },
+                "MinSize": "1",
+                "MaxSize": "2",
+                "DesiredCapacity": "1",
+                "HealthCheckType": "ELB",
+                "HealthCheckGracePeriod": 300,
+                "LoadBalancerNames": [{ "Ref": "LoadBalancer" }],
+                "Tags": [
+                    {
+                        "Key": "Stage",
+                        "Value": { "Ref": "Stage" },
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "Stack",
+                        "Value": { "Ref": "Stack" },
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "App",
+                        "Value": { "Ref": "App" },
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "Management",
+                        "Value": "port=8080,path=/api",
+                        "PropagateAtLaunch": "true"
+                    }
+                ]
+            }
+        }
+    },
+
+    "Outputs": {
+    }
+}

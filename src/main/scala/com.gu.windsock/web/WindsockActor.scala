@@ -7,6 +7,8 @@ import spray.http._
 import MediaTypes._
 import StatusCodes._
 
+import com.typesafe.config.ConfigFactory
+
 import org.joda.time.DateTime
 
 import com.gu.windsock.util.UniqueId
@@ -23,12 +25,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 // we want to be able to test it independently, without having to spin up an actor
 class WindsockActor extends Actor with WindsockRouter {
 
+  val config = com.typesafe.config.ConfigFactory.load()
+
   // the HttpService trait defines only one abstract member, which
   // connects the services environment to the enclosing actor or test
   def actorRefFactory = context
 
-  // TODO: Make it a preference
-  val tableName = "Notices"
+  val baseUri = config.getString("windsock.base-uri")
+
+  val tableName = config.getString("windsock.dynamodb.notice-table-name")
   val store = new DynamoDBPersistence(tableName)
 
   // this actor only runs our route, but you could add
@@ -49,6 +54,8 @@ trait WindsockRouter
   import JsonImplicits._
 
   val store: Persistence
+  val baseUri: String
+
 
   // TODO: extract auth-related stuff, read from updateable file
   def extractUser(userPass: UserPass): String = userPass.user
@@ -57,8 +64,6 @@ trait WindsockRouter
     authenticate(BasicAuth(realm = "Admin credentials", createUser = extractUser _))
 
 
-  // TODO: configurable
-  val baseUri = "http://localhost:8080"
   def absUrl(path: String) = s"$baseUri$path"
 
   def recordToEntity(notice: NoticeRecord) =
@@ -91,8 +96,8 @@ trait WindsockRouter
       respondWithMediaType(`application/json`) {
         pathEnd {
           get {
-            val links = List(Link("notices", absUrl("/api/notices")))
             complete {
+              val links = List(Link("notices", absUrl("/api/notices")))
               val notices = store.list.map(recordToEntity).toList
               // TODO: return collection response with total etc
               val data = Index("Windsock API", EmbeddedEntity(absUrl("/api/notices"), Some(notices)))
