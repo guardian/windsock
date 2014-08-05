@@ -21,6 +21,8 @@ class MyServiceSpec extends Specification with Specs2RouteTest with WindsockRout
   val store = new DynamoDBPersistence(tableName)
   // val store = MockPersistence
 
+  val baseUri = "http://example.com"
+
   "Windsock API" should {
 
     "return an index HTML page for GET requests to the root path" in {
@@ -50,7 +52,7 @@ class MyServiceSpec extends Specification with Specs2RouteTest with WindsockRout
     "return a MethodNotAllowed error for PUT requests to the root path" in {
       Put() ~> sealRoute(root) ~> check {
         status === MethodNotAllowed
-        responseAs[String] === "HTTP method not allowed, supported methods: GET"
+        responseAs[String] === "HTTP method not allowed, supported methods: OPTIONS, GET"
       }
     }
   }
