@@ -1,4 +1,5 @@
 import AssemblyKeys._
+import com.gu.SbtDistPlugin
 
 organization  := "com.gu.windsock"
 
@@ -27,8 +28,19 @@ libraryDependencies ++= {
 
 Revolver.settings
 
+// assembly to generate self-contained JAR
 assemblySettings
 
 jarName in assembly := "windsock.jar"
 
 test in assembly := {}
+
+
+// sbt-dist-plugin to generate TeamCity artifact
+seq(SbtDistPlugin.distSettings :_*)
+
+// include the jar itself (this is the location you want the jar to save to)
+distFiles <+= (assembly in Compile) map { _ -> "packages/windsock/windsock.jar" }
+
+// and include custom scripts in src/main/deploy
+distFiles <++= (sourceDirectory in Compile) map { src => (src / "deploy" ***) x rebase(src / "deploy", "") }
