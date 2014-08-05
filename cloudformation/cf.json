@@ -6,6 +6,10 @@
             "Description": "The EC2 Key Pair to allow SSH access to the instance",
             "Type": "String"
         },
+        "BaseUri": {
+            "Description": "The base URI of the deployed stack, e.g. http://windsock.example.com",
+            "Type": "String"
+        },
         "DeployBucket": {
             "Description": "The name of the S3 bucket that stores the artifact as part of deployment",
             "Type": "String"
@@ -168,7 +172,9 @@
                             { "Ref" : "Stage" },
                             "/windsock/windsock.jar\n",
 
-                            "java -Xmx512m -jar windsock.jar &\n"
+                            "java -Dwindsock.base-uri=",
+                            { "Ref" : "BaseUri" },
+                            "-Xmx512m -jar windsock.jar &\n"
                         ]]
                     }
                 }
