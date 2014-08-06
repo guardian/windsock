@@ -1,4 +1,7 @@
+#!/bin/bash
+
 cd public
 
-bower install
-jspm install
+npm install &&
+./node_modules/.bin/bower install &&
+./node_modules/.bin/jspm install
