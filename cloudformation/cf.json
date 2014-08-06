@@ -174,7 +174,7 @@
 
                             "java -Dwindsock.base-uri=",
                             { "Ref" : "BaseUri" },
-                            "-Xmx512m -jar windsock.jar &\n"
+                            " -Xmx512m -jar windsock.jar &\n"
                         ]]
                     }
                 }
