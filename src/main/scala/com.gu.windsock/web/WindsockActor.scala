@@ -77,19 +77,19 @@ trait WindsockRouter
     } ~
     path("") {
       get {
-        getFromFile("public/index.html")
+        getFromResource("public/index.html")
       }
     } ~
     path("admin") {
       get {
         requireAuth { username =>
-          getFromFile("public/admin.html")
+          getFromResource("public/admin.html")
         }
       }
     } ~
     pathPrefix("") {
       get {
-        getFromDirectory("public")
+        getFromResourceDirectory("public")
       }
     } ~
     pathPrefix("api") {
