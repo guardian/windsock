@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd public
+cd src/main/resources/public
 
 npm install &&
 ./node_modules/.bin/bower install &&
