@@ -124,6 +124,82 @@
             }
         },
 
+        "AppServerInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    { "Ref": "DynamoAccessRole" },
+                    { "Ref": "DistributionRole" }
+                ]
+            }
+        },
+
+        "DynamoAccessRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [ "ec2.amazonaws.com" ]
+                            },
+                            "Action": [ "sts:AssumeRole" ]
+                        }
+                    ]
+                },
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyName": "root",
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [ "dynamodb:*" ],
+                                    "Resource": [ "*" ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+
+        "DistributionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [ "ec2.amazonaws.com" ]
+                            },
+                            "Action": [ "sts:AssumeRole" ]
+                        }
+                    ]
+                },
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyName": "root",
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [ "s3:GetObject" ],
+                                    "Resource": [ "arn:aws:s3:::composer-dist/*" ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+
+
         "LoadBalancer": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
@@ -157,6 +233,7 @@
                     { "Ref": "AppServerSecurityGroup" }
                 ],
                 "InstanceType": { "Ref": "InstanceType" },
+                "IamInstanceProfile": { "Ref": "AppServerInstanceProfile" },
                 "UserData": {
                     "Fn::Base64": {
                         "Fn::Join": ["", [
