@@ -5,8 +5,9 @@
 + Record link?
 + Load Auth config for admin UI from DynamoDB/S3?
 + Record author from auth?
-+ Different styling based on type of notices
 + Mark as read after opened once
++ Put tests back in
++ Don't hardcode bucket in deploy.conf
 
 * CloudWatch metrics on Radiator
 * Add CloudWatch metrics
