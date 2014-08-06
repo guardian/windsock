@@ -26,6 +26,10 @@ libraryDependencies ++= {
   )
 }
 
+// Don't package emacs backup files or other rubbish
+excludeFilter in unmanagedResources := HiddenFileFilter || "*~"
+
+
 Revolver.settings
 
 // assembly to generate self-contained JAR
