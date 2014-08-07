@@ -6,6 +6,7 @@
   },
   "jspm": {
     "registry": "jspm",
+    "main": "windsock:elements/windsock-widget",
     "dependencies": {
       "reqwest": "^1.1.2"
     },
