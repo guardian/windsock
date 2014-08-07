@@ -6,7 +6,7 @@ function reqwestBetter(...args) {
   return Promise.resolve(reqwest(...args));
 }
 
-export default class WindsockApi {
+class WindsockApi {
   constructor(apiUrl) {
     this.apiUrl = apiUrl;
   }
@@ -60,3 +60,5 @@ export default class WindsockApi {
     });
   }
 }
+
+export default WindsockApi;
