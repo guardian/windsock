@@ -14,3 +14,5 @@ jspm_packages
 .tern-port
 node_modules
 .ensime_cache
+src/main/resources/public/dist
+src/main/resources/public/tmp

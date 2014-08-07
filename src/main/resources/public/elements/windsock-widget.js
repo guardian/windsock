@@ -6,6 +6,11 @@ import {types} from 'windsock:scripts/model';
 // don't work properly. Very ugly to do this both in the HTML and JS
 // files...
 import './windsock-data';
+// FIXME: explicit dependencies within ES6 as otherwise, the
+// dependency is managed in HTML imports and the scripts would not get
+// bundled with windsock-widget.
+import './windsock-status';
+import './windsock-notices';
 
 Polymer('windsock-widget', {
   toggle: function() {
