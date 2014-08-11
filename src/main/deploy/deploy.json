@@ -1,4 +1,5 @@
 {
+    "defaultStacks": [ "composer" ],
     "packages": {
         "windsock": {
             "type": "autoscaling",
