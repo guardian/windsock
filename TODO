@@ -1,14 +1,12 @@
-* CloudFormation script to create stack, DB, rights, etc
-* HTTPS domain
-* Configurable table name, baseUrl and other properties
-+ Proper README
-+ Record link?
+* Record link?
 + Load Auth config for admin UI from DynamoDB/S3?
 + Record author from auth?
-+ Mark as read after opened once
-+ Put tests back in
-+ Don't hardcode bucket in deploy.conf
-+ Don't allow access to ALL dynamodb tables in cf.json
++ HTTPS only (redirect)
++ Proper README
+- Mark as read after opened once
+- Put tests back in
+- Don't hardcode bucket in deploy.conf
+- Don't allow access to ALL dynamodb tables in cf.json
   https://forums.aws.amazon.com/thread.jspa?threadID=100799&tstart=0
 
 * CloudWatch metrics on Radiator
@@ -16,12 +14,12 @@
 * Tests
   - REST server
   - Web Components
-* Bundle:
-  - Traceur-compile ES6
-  - Vulcanize web components
 * Proper AWS async API
 * Can't import polymer in element scripts as it's an HTML import?
   e.g. import {Polymer} from 'github:Polymer/polymer';
+* Bundle:
+  - cleaner, without all the config/amd hacks
+  - using Plumber (or similar)
 + Notice list vs status toggle
   - Sample styling
 + Admin UI for REST API
