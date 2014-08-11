@@ -14,6 +14,10 @@
             "Description": "The name of the S3 bucket that stores the artifact as part of deployment",
             "Type": "String"
         },
+        "SSLCertificatePath": {
+            "Description": "The path of the SSL certificate to use in the ELB",
+            "Type": "String"
+        },
         "NoticeTableName": {
             "Description": "Name of the DynamoDB table to store notices",
             "Type": "String",
@@ -210,6 +214,19 @@
                         "LoadBalancerPort": "80",
                         "InstancePort": "8080",
                         "Protocol": "HTTP"
+                    },
+                    {
+                        "LoadBalancerPort": "443",
+                        "InstancePort": "8080",
+                        "Protocol": "HTTPS",
+                        "SSLCertificateId": {
+                          "Fn::Join": ["", [
+                              "arn:aws:iam::",
+                              { "Ref": "AWS::AccountId" },
+                              ":server-certificate",
+                              { "Ref": "SSLCertificatePath" }
+                          ]]
+                        }
                     }
                 ],
 
