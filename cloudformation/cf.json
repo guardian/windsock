@@ -10,6 +10,12 @@
             "Description": "The base URI of the deployed stack, e.g. http://windsock.example.com",
             "Type": "String"
         },
+        "AdminPassword": {
+            "Description": "The password for the 'admin' user",
+            "Type": "String",
+            "MinLength": "1",
+            "NoEcho": true
+        },
         "DeployBucket": {
             "Description": "The name of the S3 bucket that stores the artifact as part of deployment",
             "Type": "String"
@@ -266,8 +272,11 @@
                             { "Ref" : "Stage" },
                             "/windsock/windsock.jar\n",
 
-                            "java -Dwindsock.base-uri=",
+                            "java",
+                            " -Dwindsock.base-uri=",
                             { "Ref" : "BaseUri" },
+                            " -Dspray.routing.users.admin=",
+                            { "Ref" : "AdminPassword" },
                             " -Xmx512m -jar windsock.jar &\n"
                         ]]
                     }
