@@ -2,28 +2,39 @@
 import WindsockApi from 'windsock:scripts/api';
 
 Polymer('windsock-data', {
+  observe: {
+    src: 'restart',
+    refresh: 'restart'
+  },
+
   ready: function() {
+    this.restart();
+  },
+
+  attached: function() {
+    this.restart();
+  },
+
+  detached: function() {
+    this.stop();
+  },
+
+  restart: function() {
+    this.stop();
+
     if (this.src) {
       this.api = new WindsockApi(this.src);
+
+      if (this.refresh) {
+        var reload = this.loadNotices.bind(this);
+        this.refreshInterval = setInterval(reload, this.refresh);
+      }
+
       this.loadNotices();
     }
   },
 
-  srcChanged: function() {
-    if (this.src) {
-      this.api = new WindsockApi(this.src);
-      this.loadNotices();
-    }
-  },
-
-  attachedCallback: function() {
-    if (this.src && this.refresh) {
-      var reload = this.loadNotices.bind(this);
-      this.refreshInterval = setInterval(reload, this.refresh);
-    }
-  },
-
-  detachedCallback: function() {
+  stop: function() {
     if (this.refreshInterval) {
       clearInterval(this.refreshInterval);
     }
