@@ -20,7 +20,7 @@ Polymer('windsock-widget', {
     }
   },
 
-  noticesChanged: function(notices) {
+  noticesChanged: function(_, notices) {
     notices = notices || [];
 
     var classList = this.classList;
