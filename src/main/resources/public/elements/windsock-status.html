@@ -1,10 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="windsock-data.html">
 
-<script>
-  System.import('windsock/elements/windsock-status');
-</script>
-
 <dom-module id="windsock-status-view">
   <template>
     <span class="count">{{notices.length}}</span>
@@ -19,3 +15,7 @@
     <windsock-status-view notices="{{notices}}"></windsock-status-view>
   </template>
 </dom-module>
+
+<script>
+  System.import('windsock/elements/windsock-status');
+</script>
