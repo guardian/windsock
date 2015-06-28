@@ -10,7 +10,7 @@
     <template is="dom-if" if="{{isNotEmpty(notices)}}">
       <ul>
         <template is="dom-repeat" items="{{notices}}">
-          <li class="notice notice--{{item.data.notice.type}}">
+          <li class="{{classNotice(item.data.notice.type)}}">
             <span class$="{{classNoticeType(item.data.notice.type)}}">{{item.data.notice.type}}</span>
             <span class="notice__text">{{item.data.notice.text}}</span>
             <time class="notice__created" datetime="{{item.data.created}}">{{timeAgo(item.data.created)}}</time>

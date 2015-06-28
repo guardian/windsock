@@ -25,6 +25,10 @@ Polymer({
     return array.length !== 0;
   },
 
+  classNotice: function(type) {
+    return `notice notice--${type}`;
+  },
+
   classNoticeType: function(type) {
     return `notice__type notice__type--${type}`;
   },
