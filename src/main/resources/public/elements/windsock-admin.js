@@ -4,24 +4,56 @@
 // files...
 import './windsock-data';
 
-Polymer('windsock-admin-add', {
+Polymer({
+  is: 'windsock-admin-form',
+
+  properties: {
+    notice: {
+      type: Object,
+      notify: true
+    }
+  }
+});
+
+Polymer({
+  is: 'windsock-admin-add',
+
+  properties: {
+    src: String
+  },
+
   ready: function() {
-    this.resetForm();
+    this.resetNewNotice();
   },
 
-  addNotice: function() {
-    this.fire('add-notice', this.form);
-    return false; // cancel event
+  addNotice: function(event) {
+    // Don't let form submit and navigate
+    event.preventDefault();
+
+    this.fire('add-notice', this.newNotice);
   },
 
-  resetForm: function() {
-    this.form = {};
+  resetNewNotice: function() {
+    this.newNotice = {
+      text:   '',
+      type:   'minor', // TODO: avoid hardcoding default?
+      author: ''
+    };
   }
 });
 
 
-Polymer('windsock-admin-edit', {
-  updateNotice: function() {
+Polymer({
+  is: 'windsock-admin-edit',
+
+  properties: {
+    notice: Object
+  },
+
+  updateNotice: function(event) {
+    // Don't let form submit and navigate
+    event.preventDefault();
+
     this.fire('update-notice', this.notice);
   },
 
@@ -31,24 +63,29 @@ Polymer('windsock-admin-edit', {
 });
 
 
-Polymer('windsock-admin', {
-  ready: function() {
+Polymer({
+  is: 'windsock-admin',
+
+  properties: {
+    src: String
+  },
+
+  addNotice: function(event, notice) {
     var data = this.$.data;
     var add = this.$.add;
 
-    this.addEventListener('add-notice', (event) => {
-      var properties = event.detail;
-      data.addNotice(properties).then(add.resetForm.bind(add));
-    });
+    data.addNotice(notice).then(add.resetNewNotice.bind(add));
+  },
 
-    this.addEventListener('update-notice', (event) => {
-      var noticeToUpdate = event.detail;
-      data.updateNotice(noticeToUpdate);
-    });
+  updateNotice: function(event, notice) {
+    var data = this.$.data;
 
-    this.addEventListener('delete-notice', (event) => {
-      var noticeToDelete = event.detail;
-      data.deleteNotice(noticeToDelete);
-    });
+    data.updateNotice(notice);
+  },
+
+  deleteNotice: function(event, notice) {
+    var data = this.$.data;
+
+    data.deleteNotice(notice);
   }
 });

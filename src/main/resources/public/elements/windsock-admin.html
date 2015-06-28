@@ -1,12 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="windsock-data.html">
 
-<script>
-  System.import('windsock:elements/windsock-admin');
-</script>
-
-
-<template id="noticeForm">
+<dom-module id="windsock-admin-form">
   <style>
     textarea {
       width: 100%;
@@ -14,73 +9,83 @@
     }
   </style>
 
-  <textarea placeholder="Enter description..." value="{{form.text}}" required></textarea>
-  <!-- TODO: load available types from model -->
-  <select value="{{form.type}}" required>
-    <option value="minor">Minor</option>
-    <option value="critical">Critical</option>
-    <option value="announcement">Announcement</option>
-  </select>
-  <input type="author" placeholder="Enter author..." value="{{form.author}}" required />
-</template>
-
-
-<polymer-element name="windsock-admin-add" attributes="src notices">
   <template>
-    <!-- FIXME: form needed for required, but then submittion not cancelled? on-submit not working? -->
-    <!-- <form> -->
-      <template bind ref="noticeForm"></template>
-      <input type="submit" value="Add notice" on-click="{{addNotice}}" />
-    <!-- </form> -->
+    <textarea placeholder="Enter description..." value="{{notice.text::input}}" required></textarea>
+    <!-- TODO: load available types from model -->
+    <select value="{{notice.type::change}}" required>
+      <option value="minor">Minor</option>
+      <option value="critical">Critical</option>
+      <option value="announcement">Announcement</option>
+    </select>
+    <input type="author" placeholder="Enter author..." value="{{notice.author::input}}" required />
   </template>
-</polymer-element>
+</dom-module>
 
 
-<!-- FIXME: don't take in src argument, should not be necessary -->
-<polymer-element name="windsock-admin-edit" attributes="src notice">
+<dom-module id="windsock-admin-add">
   <template>
-    <template bind="{{notice.data.notice as form}}" ref="noticeForm"></template>
-
-    <input type="submit" value="Update" on-click="{{updateNotice}}" />
-    <button on-click="{{deleteNotice}}">Delete</button>
+    <form on-submit="addNotice">
+      <windsock-admin-form notice="{{newNotice}}"></windsock-admin-form>
+      <input type="submit" value="Add notice" />
+    </form>
   </template>
-</polymer-element>
+</dom-module>
 
 
-<polymer-element name="windsock-admin" attributes="src">
+<dom-module id="windsock-admin-edit">
   <template>
-    <style>
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
+    <form on-submit="updateNotice">
+      <windsock-admin-form notice="{{notice.data.notice}}"></windsock-admin-form>
 
-      fieldset,
-      li {
-        margin-bottom: 1em;
-      }
-    </style>
+      <input type="submit" value="Update" id="update" />
+      <!-- type="button" important to avoid submitting the form -->
+      <button type="button" on-click="deleteNotice">Delete</button>
+    </form>
+  </template>
+</dom-module>
+
+
+<dom-module id="windsock-admin">
+  <style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    fieldset,
+    li {
+      margin-bottom: 1em;
+    }
+  </style>
+
+  <template>
 
     <windsock-data id="data" src="{{src}}" sink-notices="{{notices}}"></windsock-data>
 
     <fieldset>
       <legend>Add new</legend>
-      <windsock-admin-add id="add" src="{{src}}" notices="{{notices}}"></windsock-admin-add>
+      <windsock-admin-add id="add" src="{{src}}" on-add-notice="addNotice">
+      </windsock-admin-add>
     </fieldset>
 
     <fieldset>
       <legend>Update existing</legend>
       <ul>
-        <template repeat="{{notice in notices}}">
+        <template is="dom-repeat" items="{{notices}}">
           <li>
-            <!-- FIXME: refs don't work inside this template-repeat? -->
-            <!-- <template bind ref="noticeForm"></template> -->
-
-            <windsock-admin-edit src="{{src}}" notice="{{notice}}"></windsock-admin-edit>
+            <windsock-admin-edit notice="{{item}}"
+                                 on-update-notice="updateNotice"
+                                 on-delete-notice="deleteNotice">
+            </windsock-admin-edit>
           </li>
         </template>
       </ul>
     </fieldset>
   </template>
-</polymer-element>
+</dom-module>
+
+
+<script>
+  System.import('windsock/elements/windsock-admin');
+</script>

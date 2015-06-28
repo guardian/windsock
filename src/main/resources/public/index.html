@@ -3,12 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <title>Windsock</title>
-  <script src="bower_components/platform/platform.js"></script>
-  <!-- Use the CDN version by uncommenting the next line -->
-  <!-- <script src="https://jspm.io/system@0.6.js"></script> -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
   <!-- Uncomment traceur-runtime if running from the bundled HTML import. -->
-  <!-- <script src="jspm_packages/traceur-runtime@0.0.49.js"></script> -->
-  <script src="jspm_packages/system@0.6.js"></script>
+  <!-- <script src="jspm_packages/github/jmcriffey/bower-traceur-runtime@0.0.88/traceur-runtime.js"></script> -->
+  <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>
   <link rel="import" href="elements/windsock-status.html">
   <link rel="import" href="elements/windsock-notices.html">
@@ -18,7 +16,7 @@
        have run the make-dist.sh script and to have uncommented
        traceur-runtime above. -->
   <!-- <link rel="import" href="dist/windsock-widget.html"> -->
-  <link rel="stylesheet" href="stylesheets/style.css">
+  <link rel="import" href="stylesheets/style.html">
 </head>
 <body>
   <h1>Windsock</h1>

@@ -5,7 +5,13 @@
 import './windsock-data';
 
 
-Polymer('windsock-status-view', {
+Polymer({
+  is: 'windsock-status-view',
+
+  properties: {
+    notices: Array
+  },
+
   /* == Filters == */
 
   pluralize: function(noun, count) {
@@ -17,4 +23,11 @@ Polymer('windsock-status-view', {
 
 // Note: this needs to come after windsock-status-view
 
-Polymer('windsock-status');
+Polymer({
+  is: 'windsock-status',
+
+  properties: {
+    src: String,
+    refresh: Function
+  }
+});

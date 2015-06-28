@@ -1,14 +1,21 @@
 {
   "devDependencies": {
-    "jspm": "0.6.12",
     "bower": "^1.3.8",
+    "jspm": "^0.15.7",
     "vulcanize": "^0.4.2"
+  },
+  "scripts": {
+    "postinstall": "bower install && jspm install"
   },
   "jspm": {
     "registry": "jspm",
-    "main": "windsock:elements/windsock-widget",
+    "main": "windsock/elements/windsock-widget",
     "dependencies": {
-      "reqwest": "^1.1.2"
+      "reqwest": "github:ded/reqwest@^1.1.2"
+    },
+    "devDependencies": {
+      "traceur": "github:jmcriffey/bower-traceur@0.0.88",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
     },
     "buildConfig": {
       "transpileES6": true,

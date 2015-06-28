@@ -1,36 +1,37 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="windsock-data.html">
 
-<script>
-  System.import('windsock:elements/windsock-notices');
-</script>
 
-
-<polymer-element name="windsock-notices-view" attributes="notices">
+<dom-module id="windsock-notices-view" attributes="notices">
   <template>
-    <template if="{{notices.length == 0}}">
+    <template is="dom-if" if="{{isEmpty(notices)}}">
       <p>No notices</p>
     </template>
-    <template if="{{notices.length != 0}}">
+    <template is="dom-if" if="{{isNotEmpty(notices)}}">
       <ul>
-        <template repeat="{{notice in notices}}">
-          <li class="notice notice--{{notice.data.notice.type}}">
-            <span class="notice__type notice__type--{{notice.data.notice.type}}">{{notice.data.notice.type}}</span>
-            <span class="notice__text">{{notice.data.notice.text}}</span>
-            <time class="notice__created" datetime="{{notice.data.created}}">{{notice.data.created | timeAgo}}</time>
+        <template is="dom-repeat" items="{{notices}}">
+          <li class="{{classNotice(item.data.notice.type)}}">
+            <span class$="{{classNoticeType(item.data.notice.type)}}">{{item.data.notice.type}}</span>
+            <span class="notice__text">{{item.data.notice.text}}</span>
+            <time class="notice__created" datetime="{{item.data.created}}">{{timeAgo(item.data.created)}}</time>
             <!-- TODO: flag if created == last-mod -->
-            <time class="notice__updated" datetime="{{notice.data.lastModified}}">{{notice.data.lastModified | timeAgo}}</time>
+            <time class="notice__updated" datetime="{{item.data.lastModified}}">{{timeAgo(item.data.lastModified)}}</time>
           </li>
         </template>
       </ul>
     </template>
   </template>
-</polymer-element>
+</dom-module>
 
 
-<polymer-element name="windsock-notices" attributes="src refresh">
+<dom-module id="windsock-notices">
   <template>
     <windsock-data src="{{src}}" refresh="{{refresh}}" sink-notices="{{notices}}"></windsock-data>
     <windsock-notices-view notices="{{notices}}"></windsock-notices-view>
   </template>
-</polymer-element>
+</dom-module>
+
+
+<script>
+  System.import('windsock/elements/windsock-notices');
+</script>

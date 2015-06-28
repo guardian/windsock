@@ -1,5 +1,5 @@
 // FIXME: can't use ../ possibly due to a SystemJS bug?
-import timeSince from 'windsock:scripts/time-since';
+import timeSince from 'windsock/scripts/time-since';
 
 // FIXME: This is a hack to ensure the windsock-data definition is
 // executed before the windsock-widget one. Otherwise, data bindings
@@ -8,8 +8,30 @@ import timeSince from 'windsock:scripts/time-since';
 import './windsock-data';
 
 
-Polymer('windsock-notices-view', {
+Polymer({
+  is: 'windsock-notices-view',
+
+  properties: {
+    notices: Array
+  },
+
   /* == Filters == */
+
+  isEmpty: function(array) {
+    return array.length === 0;
+  },
+
+  isNotEmpty: function(array) {
+    return array.length !== 0;
+  },
+
+  classNotice: function(type) {
+    return `notice notice--${type}`;
+  },
+
+  classNoticeType: function(type) {
+    return `notice__type notice__type--${type}`;
+  },
 
   timeAgo: function(dateString) {
     var date = new Date(dateString);
@@ -20,4 +42,11 @@ Polymer('windsock-notices-view', {
 
 // Note: must come after windsock-notices-view
 
-Polymer('windsock-notices');
+Polymer({
+  is: 'windsock-notices',
+
+  properties: {
+    src: String,
+    refresh: Function
+  }
+});

@@ -3,24 +3,24 @@
 <link rel="import" href="windsock-status.html">
 <link rel="import" href="windsock-notices.html">
 
-<script>
-  System.import('windsock:elements/windsock-widget');
-</script>
+<dom-module id="windsock-widget">
+  <style>
+    :host(.collapsed) windsock-notices-view { display: none }
+  </style>
 
-
-<polymer-element name="windsock-widget" attributes="src refresh" class="collapsed">
   <template>
-    <style>
-      :host(.collapsed) windsock-notices-view { display: none }
-    </style>
 
     <windsock-data src="{{src}}" refresh="{{refresh}}" sink-notices="{{notices}}"></windsock-data>
 
-    <button on-click="{{toggle}}" disabled?="{{notices.length === 0}}">
+    <button on-click="toggle" disabled?="{{isEmpty(notices.length)}}">
       <windsock-status-view notices="{{notices}}"></windsock-status-view>
     </button>
     <windsock-notices-view notices="{{notices}}"
                            class="collapsed"
     ></windsock-notices-view>
   </template>
-</polymer-element>
+</dom-module>
+
+<script>
+  System.import('windsock/elements/windsock-widget');
+</script>
