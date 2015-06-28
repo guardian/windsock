@@ -5,17 +5,17 @@
   System.import('windsock/elements/windsock-status');
 </script>
 
-<polymer-element name="windsock-status-view" attributes="notices">
+<dom-module id="windsock-status-view">
   <template>
     <span class="count">{{notices.length}}</span>
-    <span class="label">{{"notice" | pluralize(notices.length)}}</span>
+    <span class="label">{{pluralize("notice", notices.length)}}</span>
   </template>
-</polymer-element>
+</dom-module>
 
 
-<polymer-element name="windsock-status" attributes="src refresh">
+<dom-module id="windsock-status">
   <template>
     <windsock-data src="{{src}}" refresh="{{refresh}}" sink-notices="{{notices}}"></windsock-data>
     <windsock-status-view notices="{{notices}}"></windsock-status-view>
   </template>
-</polymer-element>
+</dom-module>

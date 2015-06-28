@@ -4,7 +4,8 @@
 // files...
 import './windsock-data';
 
-Polymer('windsock-admin-add', {
+Polymer({
+  is: 'windsock-admin-add',
   ready: function() {
     this.resetForm();
   },
@@ -20,7 +21,8 @@ Polymer('windsock-admin-add', {
 });
 
 
-Polymer('windsock-admin-edit', {
+Polymer({
+  is: 'windsock-admin-edit',
   updateNotice: function() {
     this.fire('update-notice', this.notice);
   },
@@ -31,7 +33,8 @@ Polymer('windsock-admin-edit', {
 });
 
 
-Polymer('windsock-admin', {
+Polymer({
+  is: 'windsock-admin',
   ready: function() {
     var data = this.$.data;
     var add = this.$.add;

@@ -1,10 +1,23 @@
 // FIXME: can't use ../ possibly due to a SystemJS bug?
 import WindsockApi from 'windsock/scripts/api';
 
-Polymer('windsock-data', {
-  observe: {
-    src: 'restart',
-    refresh: 'restart'
+Polymer({
+  is: 'windsock-data',
+
+  properties: {
+    src: {
+      type: String,
+      observer: 'restart'
+    },
+    refresh: {
+      type: Function,
+      observer: 'restart'
+    },
+    sinkNotices: {
+      type: Array,
+      readOnly: true,
+      notify: true
+    }
   },
 
   ready: function() {
@@ -42,13 +55,13 @@ Polymer('windsock-data', {
 
   loadNotices: function() {
     return this.api.listNotices().then(notices => {
-      this['sink-notices'] = notices;
+      this._setSinkNotices(notices);
     });
   },
 
   addNotice: function(properties) {
     return this.api.addNotice(properties.text, properties.type, properties.author).then((newRecord) => {
-      this['sink-notices'].unshift(newRecord);
+      this._setSinkNotices([newRecord].concat(this.sinkNotices));
     });
   },
 
@@ -60,7 +73,7 @@ Polymer('windsock-data', {
 
   deleteNotice: function(notice) {
     return this.api.deleteNotice(notice).then(() => {
-      this['sink-notices'] = this['sink-notices'].filter((n) => n !== notice);
+      this._setSinkNotices(this.sinkNotices.filter((n) => n !== notice));
     });
   }
 });

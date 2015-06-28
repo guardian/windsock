@@ -12,7 +12,19 @@ import './windsock-data';
 import './windsock-status';
 import './windsock-notices';
 
-Polymer('windsock-widget', {
+Polymer({
+  is: 'windsock-widget',
+
+  properties: {
+    src: String,
+    refresh: Function
+  },
+
+  ready: function() {
+    // Note: annoyingly cannot be set via hostAttributes
+    Polymer.dom(this).classList.add('collapsed');
+  },
+
   toggle: function() {
     var collapsed = this.classList.contains('collapsed');
     if (this.hasNotices() || ! collapsed) {
@@ -38,6 +50,10 @@ Polymer('windsock-widget', {
 
   hasNotices: function() {
     return this.notices && this.notices.length > 0;
+  },
+
+  isEmpty: function(array) {
+    return array.length === 0;
   }
 });
 

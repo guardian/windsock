@@ -30,7 +30,7 @@
     <!-- FIXME: form needed for required, but then submittion not cancelled? on-submit not working? -->
     <!-- <form> -->
       <template bind ref="noticeForm"></template>
-      <input type="submit" value="Add notice" on-click="{{addNotice}}" />
+      <input type="submit" value="Add notice" on-click="addNotice" />
     <!-- </form> -->
   </template>
 </polymer-element>
@@ -41,8 +41,8 @@
   <template>
     <template bind="{{notice.data.notice as form}}" ref="noticeForm"></template>
 
-    <input type="submit" value="Update" on-click="{{updateNotice}}" />
-    <button on-click="{{deleteNotice}}">Delete</button>
+    <input type="submit" value="Update" on-click="updateNotice" />
+    <button on-click="deleteNotice">Delete</button>
   </template>
 </polymer-element>
 

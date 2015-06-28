@@ -8,8 +8,26 @@ import timeSince from 'windsock/scripts/time-since';
 import './windsock-data';
 
 
-Polymer('windsock-notices-view', {
+Polymer({
+  is: 'windsock-notices-view',
+
+  properties: {
+    notices: Array
+  },
+
   /* == Filters == */
+
+  isEmpty: function(array) {
+    return array.length === 0;
+  },
+
+  isNotEmpty: function(array) {
+    return array.length !== 0;
+  },
+
+  classNoticeType: function(type) {
+    return `notice__type notice__type--${type}`;
+  },
 
   timeAgo: function(dateString) {
     var date = new Date(dateString);
@@ -20,4 +38,11 @@ Polymer('windsock-notices-view', {
 
 // Note: must come after windsock-notices-view
 
-Polymer('windsock-notices');
+Polymer({
+  is: 'windsock-notices',
+
+  properties: {
+    src: String,
+    refresh: Function
+  }
+});
