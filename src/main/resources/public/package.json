@@ -9,7 +9,7 @@
   },
   "jspm": {
     "registry": "jspm",
-    "main": "windsock:elements/windsock-widget",
+    "main": "windsock/elements/windsock-widget",
     "dependencies": {
       "reqwest": "github:ded/reqwest@^1.1.2"
     },

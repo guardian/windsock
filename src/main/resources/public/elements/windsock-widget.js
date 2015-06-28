@@ -1,5 +1,5 @@
 // FIXME: can't use ../ possibly due to a SystemJS bug?
-import {types} from 'windsock:scripts/model';
+import {types} from 'windsock/scripts/model';
 
 // FIXME: This is a hack to ensure the windsock-data definition is
 // executed before the windsock-widget one. Otherwise, data bindings

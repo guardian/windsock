@@ -1,5 +1,5 @@
 // FIXME: can't use ../ possibly due to a SystemJS bug?
-import WindsockApi from 'windsock:scripts/api';
+import WindsockApi from 'windsock/scripts/api';
 
 Polymer('windsock-data', {
   observe: {

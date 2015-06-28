@@ -14,7 +14,7 @@ do
     target="dist/$element.html"
 
     node_modules/.bin/vulcanize --inline -o $html_bundle elements/$element.html || exit 1
-    node_modules/.bin/jspm bundle windsock:elements/$element $js_bundle || exit 1
+    node_modules/.bin/jspm bundle windsock/elements/$element $js_bundle || exit 1
 
     # prepend JS bundle
     # Note: we could also link to it as a sync external resource to be
