@@ -19,7 +19,7 @@ do
     node_modules/.bin/vulcanize --inline -o $html_bundle elements/$element.html || exit 1
     node_modules/.bin/jspm bundle windsock/elements/$element $js_bundle || exit 1
 
-    rm $target
+    rm -f $target
     touch $target
 
     # prepend JS bundle
