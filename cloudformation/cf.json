@@ -262,6 +262,7 @@
                         "Fn::Join": ["", [
                             "#!/bin/bash -ev\n",
                             "apt-get -y update\n",
+                            "apt-get -y upgrade\n",
                             "apt-get -y install language-pack-en openjdk-7-jre-headless\n",
 
                             "cd /home/ubuntu\n",
