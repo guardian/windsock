@@ -6,7 +6,7 @@ This project is no longer in production and is not undergoing active development
 
 If you want to reactivate then please take some time to bring the project up to current standards and expectations.
 
-##
+## Description
 
 A microservice to manage and display the current availability status
 and update notifications for any web application.
